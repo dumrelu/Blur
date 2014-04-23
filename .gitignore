@@ -1,0 +1,10 @@
+#Ignore images
+*.ppm
+
+#Ignore .o files
+*.o
+
+#Ignore executable
+blur
+
+*~
