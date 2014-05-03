@@ -15,3 +15,5 @@ bin/main.o: src/main.c
 
 clean_compile: compile
 	rm -rf bin
+exec: compile
+	./blur
