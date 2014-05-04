@@ -3,10 +3,15 @@
 
 #define PI 3.14159265
 
+typedef enum {
+	FILTER_AVG, 
+	FILTER_GAUSS
+} filter_type;
+
 typedef struct {
 	int radius;
 	double **matrix;
-	char filter_name[30];
+	int type;
 } FILTER;
 
 FILTER *filter_create_avg(int radius);

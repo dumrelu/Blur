@@ -9,7 +9,7 @@ FILTER *filter_create_avg(int radius) {
 	//Allocate mem for the structure
 	FILTER *filter = (FILTER*) malloc(sizeof(FILTER));
 	filter->radius = radius;
-	strcpy(filter->filter_name, "AVG_FILTER");
+	filter->type = FILTER_AVG;
 
 	//Used for iterations
 	int i, j;
@@ -43,7 +43,7 @@ FILTER *filter_create_gauss(int radius, double sigma) {
 	//Allocate mem for the structure
 	FILTER *filter = (FILTER*) malloc(sizeof(FILTER));
 	filter->radius = radius;
-	strcpy(filter->filter_name, "GAUSS_FILTER");
+	filter->type = FILTER_GAUSS;
 
 	//Used for iterations
 	int i, j;
