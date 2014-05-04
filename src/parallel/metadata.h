@@ -1,0 +1,36 @@
+#ifndef METADATA_H
+#define METADATA_H
+
+#include <stdio.h>
+#include <mpi.h>
+#include <stdlib.h>
+#include "../image.h"
+
+typedef struct {
+	//Image info
+	int width;
+	int height;
+	
+	//Filter info
+	int radius;
+	double sigma;
+} METADATA;
+
+//Sets the corresponding params to the METADATA structure
+void meta_init(
+	METADATA *meta, 
+	int width, 
+	int height, 
+	int radius, 
+	double sigma
+);
+
+void meta_print(
+	METADATA *meta
+);
+
+void meta_create_type(
+	MPI_Datatype *type
+);
+
+#endif /*METADATA_H*/
