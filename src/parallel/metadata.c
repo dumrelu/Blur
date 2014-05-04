@@ -17,7 +17,7 @@ void meta_print(METADATA *meta)
 	printf("\t->height=%d\n", meta->height);
 	printf("\t->type=%d\n", meta->type);
 	printf("\t->radius=%d\n", meta->radius);
-	printf("\t->sigma->=%lf\n", meta->sigma);
+	printf("\t->git ssigma->=%lf\n", meta->sigma);
 }
 
 void meta_create_type(MPI_Datatype *type)

@@ -3,8 +3,6 @@
 
 #include <stdio.h>
 #include <mpi.h>
-#include <stdlib.h>
-#include "../image.h"
 
 typedef struct {
 	//Image info
