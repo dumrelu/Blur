@@ -1,7 +1,7 @@
 compile: bin bin/image.o bin/filter.o bin/main.o
 	gcc bin/image.o bin/filter.o bin/main.o -lm -oblur
 
-bin:
+bin: 
 	mkdir bin/
 
 bin/image.o: src/image.c
