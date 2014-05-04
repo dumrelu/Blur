@@ -29,5 +29,5 @@ bin/metadata.o: src/parallel/metadata.c
 	mpicc -o bin/metadata.o -c src/parallel/metadata.c
 
 p_exec: p_compile
-	./p_blur
+	mpiexec -n 2 ./p_blur
 	

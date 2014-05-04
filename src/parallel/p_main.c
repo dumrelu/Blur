@@ -16,8 +16,16 @@ int main(int argc, char *argv[]) {
 
 	//Testing METADATA
 	METADATA meta;
-	meta_init(&meta, 1, 2, 10, 3, 4.1);
-	meta_print(&meta);
+	MPI_Datatype META;
+	meta_create_type(&META);
+	if(world_rank == 0) {
+		meta_init(&meta, 1, 2, 10, 3, 4.1);
+		meta.height = 123;
+		MPI_Send(&meta, 1, META, 1, 0, MPI_COMM_WORLD);
+	} else {
+		MPI_Recv(&meta, 1, META, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		meta_print(&meta);
+	}
 
 	//End MPI
 	MPI_Finalize();
