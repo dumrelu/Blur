@@ -12,6 +12,7 @@ typedef struct {
 	int height;
 	
 	//Filter info
+	int type;
 	int radius;
 	double sigma;
 } METADATA;
@@ -21,6 +22,7 @@ void meta_init(
 	METADATA *meta, 
 	int width, 
 	int height, 
+	filter_type type, 
 	int radius, 
 	double sigma
 );
