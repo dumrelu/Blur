@@ -19,14 +19,17 @@ exec: compile
 	./blur
 
 #Parralel
-p_compile: bin bin/image.o bin/filter.o bin/p_main.o bin/metadata.o
-	mpicc bin/image.o bin/filter.o bin/p_main.o bin/metadata.o -lm -op_blur
+p_compile: bin bin/image.o bin/filter.o bin/p_main.o bin/metadata.o bin/common.o
+	mpicc bin/image.o bin/filter.o bin/p_main.o bin/metadata.o bin/common.o -lm -op_blur
 
 bin/p_main.o: src/parallel/p_main.c
 	mpicc -o bin/p_main.o -c src/parallel/p_main.c
 
 bin/metadata.o: src/parallel/metadata.c
 	mpicc -o bin/metadata.o -c src/parallel/metadata.c
+
+bin/common.o: src/parallel/common.c
+	mpicc -o bin/common.o -c src/parallel/common.c
 
 p_exec: p_compile
 	mpiexec -n 2 ./p_blur

@@ -1,6 +1,7 @@
 #include <mpi.h>
 #include <stdio.h>
 #include "metadata.h"
+#include "common.h"
 
 int main(int argc, char *argv[]) {
 	int world_size, world_rank;
@@ -15,16 +16,16 @@ int main(int argc, char *argv[]) {
   	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
 	//Testing METADATA
-	METADATA meta;
-	MPI_Datatype META;
-	meta_create_type(&META);
+	pixel pixel;
+	MPI_Datatype PIXEL;
+	create_pixel_type(&PIXEL);
+
 	if(world_rank == 0) {
-		meta_init(&meta, 1, 2, 10, 3, 4.1);
-		meta.height = 123;
-		MPI_Send(&meta, 1, META, 1, 0, MPI_COMM_WORLD);
+		pixel.R = 1; pixel.G = 2; pixel.B = 3;
+		MPI_Send(&pixel, 1, PIXEL, 1, 0, MPI_COMM_WORLD);
 	} else {
-		MPI_Recv(&meta, 1, META, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		meta_print(&meta);
+		MPI_Recv(&pixel, 1, PIXEL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		printf("%d %d %d\n", pixel.R, pixel.G, pixel.B);
 	}
 
 	//End MPI
