@@ -1,6 +1,7 @@
 #include <mpi.h>
 #include <stdio.h>
 #include "master.h"
+#include "slave.h"
 
 int main(int argc, char *argv[]) {
 	int world_size, world_rank;
@@ -14,18 +15,10 @@ int main(int argc, char *argv[]) {
   	//Proc rank
   	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
-	//Testing METADATA
-	METADATA meta;
-	meta_init(&meta, 1, 2, 3, 1, 5.0);
-	int n_slaves = 3;
-	int data_size = 7;
-	int max = 9/n_slaves;
-	int i;
-
-	for(i = 0; i < n_slaves; i++) {
-		master_update_metadata(&meta, &data_size, max);
-		meta_print(&meta);
-	}
+	if(world_rank == 0) //master
+		master_run(world_size);
+	else //slave
+		slave_run(world_rank);
 
 	//End MPI
 	MPI_Finalize();

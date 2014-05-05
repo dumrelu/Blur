@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <mpi.h>
+#include "../filter.h"
 
 typedef struct {
 	//Image info

@@ -26,4 +26,10 @@ int master_update_metadata(
 	int max_size
 );
 
+void master_send_pixels(
+	IMAGE *src, 
+	int radius, 
+	int n_slaves
+);
+
 #endif /*BLUR_MASTER_H*/

@@ -19,8 +19,8 @@ exec: compile
 	./blur
 
 #Parralel 
-p_compile: bin bin/image.o bin/filter.o bin/p_main.o bin/metadata.o bin/common.o bin/master.o
-	mpicc bin/image.o bin/filter.o bin/p_main.o bin/metadata.o bin/common.o bin/master.o -lm -op_blur
+p_compile: bin bin/image.o bin/filter.o bin/p_main.o bin/metadata.o bin/common.o bin/master.o bin/slave.o
+	mpicc bin/image.o bin/filter.o bin/p_main.o bin/metadata.o bin/common.o bin/master.o bin/slave.o -lm -op_blur
 
 bin/p_main.o: src/parallel/p_main.c
 	mpicc -o bin/p_main.o -c src/parallel/p_main.c
@@ -34,6 +34,9 @@ bin/common.o: src/parallel/common.c
 bin/master.o: src/parallel/master.c
 	mpicc -o bin/master.o -c src/parallel/master.c
 
+bin/slave.o: src/parallel/slave.c
+	mpicc -o bin/slave.o -c src/parallel/slave.c
+
 p_exec: p_compile
-	mpiexec -n 1 ./p_blur
+	mpiexec -n 3 ./p_blur
 	

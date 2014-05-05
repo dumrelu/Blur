@@ -20,7 +20,12 @@ void master_run(int world_size)
 	IMAGE *src = image_load(image_src_name);
 
 	//Send metadata to the slaves
+	printf("Sending metadata...\n");
 	master_send_metadata(src, radius, type, sigma, world_size-1);
+
+	//Send pixels
+	printf("Sending data to slaves...\n");
+	master_send_pixels(src, radius, world_size-1);
 
 	//Free memory
 	image_free(src);
@@ -35,8 +40,22 @@ int master_send_metadata(IMAGE *image, int type, int radius, double sigma, int n
 	METADATA meta;
 	meta_init(&meta, image->width, image->height, type, radius, sigma);
 	
-	//
+	//Prepare metadata mpi datatype
+	MPI_Datatype META;
+	meta_create_type(&META);
+	
+	//Calculate the total data size(ignoring the endges)
 	int data_size = image->height - 2*radius;
+	int i;
+	const int max_size = image->height / n_slaves;
+
+	//Update and send the metadata
+	for(i = 0; i < n_slaves && data_size != 0; i++) {
+		master_update_metadata(&meta, &data_size, max_size);
+		MPI_Send(&meta, 1, META, i+1, 0 , MPI_COMM_WORLD);
+	}
+
+	return i+1;
 }
 
 int master_update_metadata(METADATA *meta, int *data_size, int max_size)
@@ -62,4 +81,33 @@ int master_update_metadata(METADATA *meta, int *data_size, int max_size)
 	meta->height = send_data;
 
 	return *data_size;
+}
+
+void master_send_pixels(IMAGE *src, int radius, int n_slaves)
+{
+	//Init metadata
+	METADATA meta;
+	meta_init(&meta, src->width, src->height, 0, radius, 0);
+
+	//Prepare pixel type
+	MPI_Datatype PIXEL;
+	create_pixel_type(&PIXEL);
+
+	//Calculate the total data size(ignoring the endges)
+	int data_size = src->height - 2*meta.radius;
+	int i, j, index = 0;
+	const int max_size = src->height / n_slaves;
+
+
+	//Update and send the metadata
+	for(i = 0; i < n_slaves && data_size != 0; i++) {
+		//Update metadata
+		master_update_metadata(&meta, &data_size, max_size);
+		
+		//Send data
+		send_subimage(src, &PIXEL, i+1, index, meta.height);
+
+		//Update index
+		index += meta.height - 2*meta.radius;
+	}
 }
