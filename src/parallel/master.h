@@ -32,4 +32,10 @@ void master_send_pixels(
 	int n_slaves
 );
 
+IMAGE *master_recv_blur(
+	IMAGE *src,
+	int radius, 
+	int n_slaves
+);
+
 #endif /*BLUR_MASTER_H*/

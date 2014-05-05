@@ -29,6 +29,17 @@ void slave_run(int world_rank)
 	create_pixel_type(&PIXEL);
 	recv_subimage(sub_image, &PIXEL, 0, 0, meta.height);
 
+	//Create filter	TODO: use meta.type to select filter
+	FILTER *filter = filter_create_gauss(meta.radius, meta.sigma);
+
+	//Apply filter
+	IMAGE *result = apply_filter(sub_image, filter);
+
+	//Send data back to master
+	send_subimage(result, &PIXEL, 0, meta.radius, meta.height-meta.radius);
+
 	//Free memory
 	image_free(sub_image);
+	image_free(result);
+	filter_free(filter);
 }

@@ -23,3 +23,4 @@ int main(int argc, char *argv[]) {
 	//End MPI
 	MPI_Finalize();
 }
+
