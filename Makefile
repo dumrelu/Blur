@@ -38,5 +38,5 @@ bin/slave.o: src/parallel/slave.c
 	mpicc -o bin/slave.o -c src/parallel/slave.c
 
 p_exec: p_compile
-	mpiexec -n 3 ./p_blur
+	mpiexec -n 5 ./p_blur
 	
